@@ -13,7 +13,8 @@ class RipController extends Controller
      */
     public function index()
     {
-        //
+        $roturas = Rip::all();
+        return view('pages.roturas.index', compact('roturas'));
     }
 
     /**
@@ -21,7 +22,7 @@ class RipController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.roturas.form');
     }
 
     /**
@@ -29,7 +30,17 @@ class RipController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'tuition_id'=>'required|exists:tuitions,id',
+            'payment'=>'required|in:financiado,cancelado',
+            'amount'=>'required|string',
+            'payment_date'=>'required|date'
+        ]);
+        
+        Rip::create($data);
+        
+        return redirect()->route('rotura.index')->with('mensaje', 'Creado Exitosamente');
+        
     }
 
     /**
@@ -53,7 +64,17 @@ class RipController extends Controller
      */
     public function update(Request $request, Rip $rip)
     {
-        //
+        $data = $request->validate([
+            'payment' => 'sometimes|in:financiado,cancelado',
+            'amount' => 'sometimes|string',
+            'payment_date'=>'sometimes|date'
+        ]);
+
+        if(!$rip->update($data)){
+            return redirect()->route('rotura.edit',$rip)->with('mensaje','Rotura no se pudo actualizar');
+        }
+            
+        return redirect()->route('rotura.index')->with('mensaje','Rotura actualizada exitosamente');
     }
 
     /**
@@ -61,6 +82,7 @@ class RipController extends Controller
      */
     public function destroy(Rip $rip)
     {
-        //
+        $rip->delete();
+        return redirect()->route('rotura.index')->with('mensaje','Eliminado correctamente');
     }
 }

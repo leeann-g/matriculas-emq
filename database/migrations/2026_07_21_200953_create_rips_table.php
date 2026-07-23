@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('rips', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tution_id')->unique()->constrained()->onDelete('cascade');
+            $table->foreignId('tuition_id')->unique()->constrained()->onDelete('cascade');
             $table->enum('payment', ['financiado', 'cancelado']);
             $table->string('amount');
-            $table->string('payment_date');
+            $table->date('payment_date');
             $table->timestamps();
         });
     }

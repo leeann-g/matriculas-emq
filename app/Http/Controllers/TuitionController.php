@@ -38,14 +38,9 @@ class TuitionController extends Controller
             'rip_status' => 'required|boolean'
         ]);
 
-        $matricula = Tuition::create($data);
-
-        if(!$matricula){
-            $mensaje = 'No se pudo crear, vuelve a intentarlo';
-            return $mensaje;
-        }else{
-            return redirect()->route('matricula.index')->with('mensaje','Matricula creada exitosamente');
-        }
+        Tuition::create($data);
+        
+        return redirect()->route('matricula.index')->with('mensaje','Matricula creada exitosamente');
     }
 
     /**
@@ -71,19 +66,18 @@ class TuitionController extends Controller
     {
         $data = $request->validate([
             'date' => 'sometimes|date',
-            'code'=>'sometimes|unique:tuitions,code,'.$tuition->id,
-            'nuid' => 'sometimes|unique:tuitions,nuid,'.$tuition->id,
-            'meter_number' => 'sometimes|unique:tuitions,meter_number,'.$tuition->id,
+            'code'=>'sometimes|string|unique:tuitions,code,'.$tuition->id,
+            'nuid' => 'sometimes|string|unique:tuitions,nuid,'.$tuition->id,
+            'meter_number' => 'sometimes|string|unique:tuitions,meter_number,'.$tuition->id,
             'rip_status' => 'sometimes|boolean'
         ]);
 
-        $matricula = $tuition->update($data);
 
-        if(!$matricula){
+        if(!$tuition->update($data)){
             return redirect()->route('matricula.edit', $tuition)->with('mensaje','La matricula no se actualizó');
-        }else{
-            return redirect()->route('matricula.index')->with('mensaje', 'Matricula actualizada correctamente');
         }
+        
+        return redirect()->route('matricula.index')->with('mensaje', 'Matricula actualizada correctamente');
     }
 
     /**
@@ -92,5 +86,6 @@ class TuitionController extends Controller
     public function destroy(Tuition $tuition)
     {
         $tuition->delete();
+        return redirect()->route('matricula.index')->with('mensaje', 'Eliminada correctamente');
     }
 }
