@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title','Inicio')
+
 @section('content')
     <div class="bg-blue-700  mx-auto text-center w-fit px-10 rounded-3xl py-10">
         <p class="text-white text-5xl font-bold">
@@ -9,7 +11,7 @@
         <p class="text-white text-4xl font-bold">
             (SIN MATRÍCULA, NO EXISTE ROTURA)
         </p>
-        <a href=""
+        <a href="{{ route('matricula.create')}}"
             class="flex items-center justify-center gap-3 w-fit mx-auto mt-10 bg-green-700 px-8 py-4 rounded-3xl ">
             <img src="{{ asset('images/icons/anadir.png') }}" alt="Añadir Magnific" class="h-10 w-10">
             <span class="text-white text-3xl font-bold">Matricula</span>
